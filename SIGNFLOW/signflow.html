@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -43,7 +44,7 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
-            overflow-x: hidden;
+            overflow: hidden;
             position: relative;
         }
 
@@ -63,16 +64,19 @@
 
         .container {
             width: 100%;
-            max-width: 1600px;
+            max-width: 1800px;
             display: flex;
             flex-direction: column;
-            gap: 40px;
+            gap: 30px;
+            height: 95vh;
+            max-height: 1000px;
         }
 
         header {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             position: relative;
+            flex-shrink: 0;
         }
 
         .logo-container {
@@ -80,7 +84,7 @@
             align-items: center;
             justify-content: center;
             gap: 20px;
-            margin-bottom: 25px;
+            margin-bottom: 15px;
             position: relative;
         }
 
@@ -102,8 +106,8 @@
         }
 
         .logo-icon {
-            width: 80px;
-            height: 80px;
+            width: 70px;
+            height: 70px;
             background: var(--gradient);
             border-radius: 22px;
             display: flex;
@@ -138,7 +142,7 @@
         }
 
         h1 {
-            font-size: 4.5rem;
+            font-size: 3.5rem;
             font-weight: 900;
             background: linear-gradient(135deg, #F8FAFC, #60A5FA, #22D3EE);
             -webkit-background-clip: text;
@@ -153,17 +157,17 @@
         h1::after {
             content: '';
             position: absolute;
-            bottom: -10px;
+            bottom: -8px;
             left: 10%;
             width: 80%;
-            height: 4px;
+            height: 3px;
             background: var(--gradient);
             border-radius: 2px;
             filter: blur(2px);
         }
 
         .subtitle {
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             color: var(--text-secondary);
             font-weight: 400;
             max-width: 600px;
@@ -178,41 +182,90 @@
             top: 50%;
             transform: translateY(-50%);
             color: var(--accent);
-            font-size: 1.2rem;
+            font-size: 1rem;
         }
 
         .subtitle::before {
-            left: -30px;
+            left: -25px;
         }
 
         .subtitle::after {
-            right: -30px;
+            right: -25px;
         }
 
         .main-content {
             display: flex;
-            gap: 40px;
-            flex-wrap: wrap;
+            flex-direction: column;
+            gap: 25px;
+            flex: 1;
+            overflow: hidden;
         }
 
-        .left-panel, .right-panel {
+        .tabs {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .tab {
+            padding: 15px 30px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 60px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.7);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1rem;
+            letter-spacing: 1px;
+        }
+
+        .tab.active {
+            background: rgba(59, 130, 246, 0.2);
+            color: white;
+            border-color: rgba(59, 130, 246, 0.5);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+            transform: translateY(-5px);
+        }
+
+        .detection-layout {
+            display: flex;
+            gap: 30px;
             flex: 1;
-            min-width: 320px;
+            overflow: hidden;
+        }
+
+        .camera-section {
+            flex: 2;
             display: flex;
             flex-direction: column;
-            gap: 30px;
+            gap: 20px;
+        }
+
+        .transcript-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
 
         .card {
             background: var(--glass);
             backdrop-filter: blur(20px);
-            border-radius: 28px;
-            padding: 35px;
+            border-radius: 24px;
+            padding: 25px;
             box-shadow: var(--shadow);
             border: 1px solid var(--glass-border);
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
         }
 
         .card::before {
@@ -233,8 +286,8 @@
         }
 
         .card:hover {
-            transform: translateY(-12px) scale(1.01);
-            box-shadow: 0 35px 60px rgba(59, 130, 246, 0.2), var(--glow);
+            transform: translateY(-8px) scale(1.01);
+            box-shadow: 0 25px 50px rgba(59, 130, 246, 0.2), var(--glow);
             border-color: rgba(255, 255, 255, 0.1);
         }
 
@@ -242,11 +295,12 @@
             display: flex;
             justify-content: space-between;
             position: relative;
+            flex-shrink: 0;
         }
 
         .stat-item {
             text-align: center;
-            padding: 20px;
+            padding: 15px;
             flex: 1;
             position: relative;
             z-index: 1;
@@ -258,21 +312,21 @@
             right: 0;
             top: 50%;
             transform: translateY(-50%);
-            height: 60px;
+            height: 50px;
             width: 2px;
             background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.2), transparent);
         }
 
         .stat-label {
-            font-size: 1.1rem;
+            font-size: 1rem;
             color: var(--text-secondary);
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             font-weight: 500;
             letter-spacing: 1px;
         }
 
         .stat-value {
-            font-size: 3.5rem;
+            font-size: 2.8rem;
             font-weight: 900;
             background: var(--gradient);
             -webkit-background-clip: text;
@@ -287,11 +341,12 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 25px;
+            padding: 20px;
             border-radius: 20px;
             background: rgba(255, 255, 255, 0.05);
             position: relative;
             overflow: hidden;
+            flex-shrink: 0;
         }
 
         .status::before {
@@ -307,68 +362,70 @@
         }
 
         .status-text {
-            font-size: 1.4rem;
+            font-size: 1.2rem;
             font-weight: 700;
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
         }
 
         .status-indicator {
-            width: 20px;
-            height: 20px;
+            width: 16px;
+            height: 16px;
             border-radius: 50%;
             background: var(--accent);
-            box-shadow: 0 0 25px var(--accent);
+            box-shadow: 0 0 20px var(--accent);
             position: relative;
             animation: glow-pulse 2s infinite;
         }
 
         @keyframes glow-pulse {
-            0%, 100% { box-shadow: 0 0 25px var(--accent); }
-            50% { box-shadow: 0 0 35px var(--accent); }
+            0%, 100% { box-shadow: 0 0 20px var(--accent); }
+            50% { box-shadow: 0 0 30px var(--accent); }
         }
 
         .status-standby {
             background: var(--primary);
-            box-shadow: 0 0 25px var(--primary);
+            box-shadow: 0 0 20px var(--primary);
             animation: glow-pulse-standby 2s infinite;
         }
 
         @keyframes glow-pulse-standby {
-            0%, 100% { box-shadow: 0 0 25px var(--primary); }
-            50% { box-shadow: 0 0 35px var(--primary); }
+            0%, 100% { box-shadow: 0 0 20px var(--primary); }
+            50% { box-shadow: 0 0 30px var(--primary); }
         }
 
         .webcam-container {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 30px;
+            gap: 20px;
+            flex: 1;
         }
 
         .webcam-title {
-            font-size: 1.6rem;
+            font-size: 1.4rem;
             font-weight: 800;
             color: var(--text-primary);
             display: flex;
             align-items: center;
-            gap: 15px;
-            letter-spacing: 2px;
+            gap: 12px;
+            letter-spacing: 1px;
         }
 
         .webcam-feed {
             width: 100%;
-            height: 400px;
+            flex: 1;
             background: linear-gradient(135deg, #1E293B, #0F172A);
-            border-radius: 24px;
+            border-radius: 20px;
             display: flex;
             justify-content: center;
             align-items: center;
             position: relative;
             overflow: hidden;
-            box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.5);
+            box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.5);
             border: 2px solid rgba(255, 255, 255, 0.1);
+            min-height: 0;
         }
 
         .webcam-feed::before {
@@ -388,10 +445,10 @@
         }
 
         .webcam-placeholder {
-            font-size: 3rem;
+            font-size: 2.5rem;
             font-weight: 900;
             color: white;
-            letter-spacing: 6px;
+            letter-spacing: 5px;
             text-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
             z-index: 2;
             background: var(--gradient);
@@ -401,7 +458,7 @@
         }
 
         .webcam-subtitle {
-            font-size: 1.2rem;
+            font-size: 1rem;
             color: var(--text-secondary);
             text-align: center;
             line-height: 1.6;
@@ -412,19 +469,20 @@
             background: var(--gradient);
             color: white;
             border: none;
-            padding: 22px 50px;
+            padding: 18px 40px;
             border-radius: 60px;
-            font-size: 1.3rem;
+            font-size: 1.1rem;
             font-weight: 800;
             cursor: pointer;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
             position: relative;
             overflow: hidden;
             letter-spacing: 1px;
+            flex-shrink: 0;
         }
 
         .detection-button::before {
@@ -439,7 +497,7 @@
         }
 
         .detection-button:hover {
-            transform: translateY(-8px) scale(1.05);
+            transform: translateY(-6px) scale(1.05);
             box-shadow: 0 15px 40px rgba(59, 130, 246, 0.5), 0 0 30px rgba(59, 130, 246, 0.3);
         }
 
@@ -451,22 +509,28 @@
             transform: translateY(-2px);
         }
 
+        .transcript-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
         .transcript-title {
-            font-size: 1.6rem;
+            font-size: 1.4rem;
             font-weight: 800;
             color: var(--text-primary);
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
             letter-spacing: 1px;
         }
 
         .transcript-content {
             background: rgba(255, 255, 255, 0.05);
-            border-radius: 24px;
-            padding: 35px;
-            min-height: 300px;
+            border-radius: 20px;
+            padding: 25px;
+            flex: 1;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -474,6 +538,7 @@
             border: 2px dashed rgba(255, 255, 255, 0.1);
             transition: all 0.4s ease;
             position: relative;
+            min-height: 0;
         }
 
         .transcript-content.active {
@@ -483,10 +548,10 @@
         }
 
         .transcript-text {
-            font-size: 4rem;
+            font-size: 3.5rem;
             font-weight: 900;
             color: var(--text-primary);
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             text-align: center;
             background: var(--gradient);
             -webkit-background-clip: text;
@@ -497,7 +562,7 @@
         }
 
         .transcript-subtext {
-            font-size: 1.2rem;
+            font-size: 1rem;
             color: var(--text-tertiary);
             text-align: center;
             line-height: 1.6;
@@ -506,21 +571,21 @@
         .confidence {
             display: flex;
             align-items: center;
-            gap: 15px;
-            margin-top: 25px;
+            gap: 12px;
+            margin-top: 20px;
             background: rgba(255, 255, 255, 0.05);
-            padding: 15px 25px;
+            padding: 12px 20px;
             border-radius: 50px;
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .confidence-label {
-            font-size: 1.1rem;
+            font-size: 1rem;
             color: var(--text-secondary);
         }
 
         .confidence-value {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-weight: 800;
             color: var(--accent);
             text-shadow: 0 0 10px rgba(6, 182, 212, 0.5);
@@ -529,16 +594,17 @@
         .speech-container {
             display: flex;
             flex-direction: column;
-            gap: 30px;
+            gap: 20px;
+            flex-shrink: 0;
         }
 
         .speech-title {
-            font-size: 1.6rem;
+            font-size: 1.4rem;
             font-weight: 800;
             color: var(--text-primary);
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
             letter-spacing: 1px;
         }
 
@@ -546,9 +612,9 @@
             background: var(--gradient-light);
             color: white;
             border: none;
-            padding: 24px 40px;
+            padding: 20px 35px;
             border-radius: 60px;
-            font-size: 1.3rem;
+            font-size: 1.1rem;
             font-weight: 800;
             cursor: pointer;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -556,7 +622,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 15px;
+            gap: 12px;
             position: relative;
             overflow: hidden;
             letter-spacing: 1px;
@@ -574,7 +640,7 @@
         }
 
         .convert-button:hover {
-            transform: translateY(-8px) scale(1.05);
+            transform: translateY(-6px) scale(1.05);
             box-shadow: 0 15px 40px rgba(59, 130, 246, 0.5), 0 0 30px rgba(59, 130, 246, 0.3);
         }
 
@@ -582,24 +648,28 @@
             left: 100%;
         }
 
+        .settings-container {
+            flex-shrink: 0;
+        }
+
         .settings-title {
-            font-size: 1.6rem;
+            font-size: 1.4rem;
             font-weight: 800;
             color: var(--text-primary);
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
             letter-spacing: 1px;
         }
 
         .setting-item {
-            margin-bottom: 35px;
+            margin-bottom: 25px;
         }
 
         .setting-label {
-            font-size: 1.3rem;
-            margin-bottom: 18px;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
             display: block;
             color: var(--text-primary);
             font-weight: 600;
@@ -608,14 +678,14 @@
         .slider-container {
             display: flex;
             align-items: center;
-            gap: 25px;
+            gap: 20px;
         }
 
         .slider {
             flex: 1;
-            height: 12px;
+            height: 10px;
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 6px;
+            border-radius: 5px;
             outline: none;
             -webkit-appearance: none;
             position: relative;
@@ -623,14 +693,14 @@
 
         .slider::-webkit-slider-thumb {
             -webkit-appearance: none;
-            width: 30px;
-            height: 30px;
+            width: 25px;
+            height: 25px;
             border-radius: 50%;
             background: var(--primary);
             cursor: pointer;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
             transition: all 0.2s ease;
-            border: 4px solid white;
+            border: 3px solid white;
         }
 
         .slider::-webkit-slider-thumb:hover {
@@ -640,46 +710,15 @@
         }
 
         .slider-value {
-            width: 70px;
+            width: 60px;
             text-align: center;
             font-weight: 800;
             color: var(--text-primary);
-            font-size: 1.3rem;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 10px 15px;
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .tabs {
-            display: flex;
-            gap: 25px;
-            margin-bottom: 40px;
-            justify-content: center;
-        }
-
-        .tab {
-            padding: 18px 35px;
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 60px;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            font-weight: 700;
-            color: rgba(255, 255, 255, 0.7);
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            align-items: center;
-            gap: 12px;
             font-size: 1.1rem;
-            letter-spacing: 1px;
-        }
-
-        .tab.active {
-            background: rgba(59, 130, 246, 0.2);
-            color: white;
-            border-color: rgba(59, 130, 246, 0.5);
-            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
-            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .hidden {
@@ -687,7 +726,7 @@
         }
 
         .icon {
-            font-size: 1.4rem;
+            font-size: 1.2rem;
         }
 
         .floating-elements {
@@ -720,15 +759,15 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            border-radius: 24px;
+            border-radius: 20px;
         }
 
         .capture-indicator {
             position: absolute;
-            top: 15px;
-            right: 15px;
-            width: 15px;
-            height: 15px;
+            top: 12px;
+            right: 12px;
+            width: 12px;
+            height: 12px;
             border-radius: 50%;
             background-color: #ef4444;
             box-shadow: 0 0 10px #ef4444;
@@ -743,77 +782,51 @@
 
         .capture-count {
             position: absolute;
-            bottom: 15px;
-            right: 15px;
+            bottom: 12px;
+            right: 12px;
             background: rgba(0, 0, 0, 0.7);
             color: white;
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 0.9rem;
+            padding: 4px 8px;
+            border-radius: 15px;
+            font-size: 0.8rem;
             font-weight: 600;
         }
 
         .status-message {
             position: absolute;
-            top: 15px;
-            left: 15px;
+            top: 12px;
+            left: 12px;
             background: rgba(0, 0, 0, 0.7);
             color: white;
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 0.9rem;
+            padding: 4px 8px;
+            border-radius: 15px;
+            font-size: 0.8rem;
             font-weight: 600;
         }
 
-        /* New layout styles - Camera on left, Transcript on right */
-        .detection-layout {
-            display: flex;
-            gap: 40px;
-            align-items: stretch;
-        }
-
-        .camera-section {
-            flex: 2;
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
-        }
-
-        .transcript-section {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
-        }
-
-        .wide-camera .webcam-feed {
-            height: 500px;
-        }
-
-        .big-transcript .transcript-content {
-            min-height: 400px;
-        }
-
-        .big-transcript .transcript-text {
-            font-size: 5rem;
-        }
-
-        @media (max-width: 768px) {
-            .main-content {
-                flex-direction: column;
+        @media (max-width: 1200px) {
+            .container {
+                height: auto;
+                max-height: none;
             }
             
             .detection-layout {
                 flex-direction: column;
             }
             
+            .transcript-text {
+                font-size: 3rem;
+            }
+        }
+
+        @media (max-width: 768px) {
             h1 {
-                font-size: 3.5rem;
+                font-size: 2.5rem;
             }
             
             .stats {
                 flex-direction: column;
-                gap: 25px;
+                gap: 20px;
             }
             
             .stat-item:not(:last-child)::after {
@@ -822,11 +835,16 @@
             
             .logo-container {
                 flex-direction: column;
-                gap: 15px;
+                gap: 12px;
             }
             
-            .big-transcript .transcript-text {
-                font-size: 3rem;
+            .transcript-text {
+                font-size: 2.5rem;
+            }
+            
+            .tabs {
+                flex-direction: column;
+                align-items: center;
             }
         }
     </style>
@@ -846,18 +864,18 @@
             <div class="subtitle">Sign language detection and translation</div>
         </header>
 
-        <div class="tabs">
-            <div class="tab active" onclick="switchTab('active')">
-                <i class="fas fa-play-circle icon"></i> Active Mode
+        <div class="main-content">
+            <div class="tabs">
+                <div class="tab active" onclick="switchTab('active')">
+                    <i class="fas fa-play-circle icon"></i> Active Mode
+                </div>
+                <div class="tab" onclick="switchTab('standby')">
+                    <i class="fas fa-pause-circle icon"></i> Standby Mode
+                </div>
             </div>
-            <div class="tab" onclick="switchTab('standby')">
-                <i class="fas fa-pause-circle icon"></i> Standby Mode
-            </div>
-        </div>
 
-        <!-- Active Mode -->
-        <div id="active-mode" class="main-content">
-            <div class="left-panel">
+            <!-- Active Mode -->
+            <div id="active-mode">
                 <div class="card stats">
                     <div class="stat-item">
                         <div class="stat-label">WORDS TRANSLATED</div>
@@ -875,9 +893,9 @@
                     <div class="status-indicator"></div>
                 </div>
                 
-                <!-- New Wide Camera + Big Transcript Layout -->
+                <!-- Side-by-Side Camera and Transcript Layout -->
                 <div class="detection-layout">
-                    <div class="camera-section wide-camera">
+                    <div class="camera-section">
                         <div class="card webcam-container">
                             <div class="webcam-title">
                                 <i class="fas fa-video icon"></i> LIVE CAMERA FEED
@@ -895,7 +913,7 @@
                         </div>
                     </div>
                     
-                    <div class="transcript-section big-transcript">
+                    <div class="transcript-section">
                         <div class="card transcript-container">
                             <div class="transcript-title">
                                 <i class="fas fa-comment-alt icon"></i> LIVE TRANSCRIPT
@@ -917,37 +935,32 @@
                                 <i class="fas fa-play icon"></i> CONVERT TO SPEECH
                             </button>
                         </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="right-panel">
-                <!-- Voice Settings -->
-                <div class="card settings-container">
-                    <div class="settings-title">
-                        <i class="fas fa-sliders-h icon"></i> VOICE SETTINGS
-                    </div>
-                    <div class="setting-item">
-                        <label class="setting-label">SPEECH RATE</label>
-                        <div class="slider-container">
-                            <input type="range" min="0.5" max="2.0" step="0.1" value="1.0" class="slider" id="speech-rate">
-                            <div class="slider-value">1.0x</div>
-                        </div>
-                    </div>
-                    <div class="setting-item">
-                        <label class="setting-label">PITCH LEVEL</label>
-                        <div class="slider-container">
-                            <input type="range" min="0.5" max="2.0" step="0.1" value="1.0" class="slider" id="pitch-level">
-                            <div class="slider-value">1.0x</div>
+                        
+                        <div class="card settings-container">
+                            <div class="settings-title">
+                                <i class="fas fa-sliders-h icon"></i> VOICE SETTINGS
+                            </div>
+                            <div class="setting-item">
+                                <label class="setting-label">SPEECH RATE</label>
+                                <div class="slider-container">
+                                    <input type="range" min="0.5" max="2.0" step="0.1" value="1.0" class="slider" id="speech-rate">
+                                    <div class="slider-value">1.0x</div>
+                                </div>
+                            </div>
+                            <div class="setting-item">
+                                <label class="setting-label">PITCH LEVEL</label>
+                                <div class="slider-container">
+                                    <input type="range" min="0.5" max="2.0" step="0.1" value="1.0" class="slider" id="pitch-level">
+                                    <div class="slider-value">1.0x</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Standby Mode -->
-        <div id="standby-mode" class="main-content hidden">
-            <div class="left-panel">
+            <!-- Standby Mode -->
+            <div id="standby-mode" class="hidden">
                 <div class="card stats">
                     <div class="stat-item">
                         <div class="stat-label">WORDS TRANSLATED</div>
@@ -964,53 +977,60 @@
                     </div>
                     <div class="status-indicator status-standby"></div>
                 </div>
-                <div class="card webcam-container">
-                    <div class="webcam-title">
-                        <i class="fas fa-video icon"></i> CAMERA READY
-                    </div>
-                    <div class="webcam-feed">
-                        <div class="webcam-placeholder">WEBCAM</div>
-                    </div>
-                    <div class="webcam-subtitle">Camera is ready. Click start to begin sign language detection.</div>
-                    <button class="detection-button" id="standbyDetectionButton">
-                        <i class="fas fa-play-circle icon"></i> START DETECTION
-                    </button>
-                </div>
-            </div>
-            <div class="right-panel">
-                <div class="card transcript-container">
-                    <div class="transcript-title">
-                        <i class="fas fa-comment-alt icon"></i> LIVE TRANSCRIPT
-                    </div>
-                    <div class="transcript-content">
-                        <div class="transcript-subtext">Translated words will appear here</div>
-                        <div class="transcript-subtext">Start detection to begin translation</div>
-                    </div>
-                </div>
-                <div class="card speech-container">
-                    <div class="speech-title">
-                        <i class="fas fa-volume-up icon"></i> CONVERT TO SPEECH
-                    </div>
-                    <button class="convert-button" id="standbyConvertButton">
-                        <i class="fas fa-play icon"></i> CONVERT TO SPEECH
-                    </button>
-                </div>
-                <div class="card settings-container">
-                    <div class="settings-title">
-                        <i class="fas fa-sliders-h icon"></i> VOICE SETTINGS
-                    </div>
-                    <div class="setting-item">
-                        <label class="setting-label">SPEECH RATE</label>
-                        <div class="slider-container">
-                            <input type="range" min="0.5" max="2.0" step="0.1" value="1.0" class="slider" id="speech-rate-standby">
-                            <div class="slider-value">1.0x</div>
+                <div class="detection-layout">
+                    <div class="camera-section">
+                        <div class="card webcam-container">
+                            <div class="webcam-title">
+                                <i class="fas fa-video icon"></i> CAMERA READY
+                            </div>
+                            <div class="webcam-feed">
+                                <div class="webcam-placeholder">WEBCAM</div>
+                            </div>
+                            <div class="webcam-subtitle">Camera is ready. Click start to begin sign language detection.</div>
+                            <button class="detection-button" id="standbyDetectionButton">
+                                <i class="fas fa-play-circle icon"></i> START DETECTION
+                            </button>
                         </div>
                     </div>
-                    <div class="setting-item">
-                        <label class="setting-label">PITCH LEVEL</label>
-                        <div class="slider-container">
-                            <input type="range" min="0.5" max="2.0" step="0.1" value="1.0" class="slider" id="pitch-level-standby">
-                            <div class="slider-value">1.0x</div>
+                    
+                    <div class="transcript-section">
+                        <div class="card transcript-container">
+                            <div class="transcript-title">
+                                <i class="fas fa-comment-alt icon"></i> LIVE TRANSCRIPT
+                            </div>
+                            <div class="transcript-content">
+                                <div class="transcript-subtext">Translated words will appear here</div>
+                                <div class="transcript-subtext">Start detection to begin translation</div>
+                            </div>
+                        </div>
+                        
+                        <div class="card speech-container">
+                            <div class="speech-title">
+                                <i class="fas fa-volume-up icon"></i> CONVERT TO SPEECH
+                            </div>
+                            <button class="convert-button" id="standbyConvertButton">
+                                <i class="fas fa-play icon"></i> CONVERT TO SPEECH
+                            </button>
+                        </div>
+                        
+                        <div class="card settings-container">
+                            <div class="settings-title">
+                                <i class="fas fa-sliders-h icon"></i> VOICE SETTINGS
+                            </div>
+                            <div class="setting-item">
+                                <label class="setting-label">SPEECH RATE</label>
+                                <div class="slider-container">
+                                    <input type="range" min="0.5" max="2.0" step="0.1" value="1.0" class="slider" id="speech-rate-standby">
+                                    <div class="slider-value">1.0x</div>
+                                </div>
+                            </div>
+                            <div class="setting-item">
+                                <label class="setting-label">PITCH LEVEL</label>
+                                <div class="slider-container">
+                                    <input type="range" min="0.5" max="2.0" step="0.1" value="1.0" class="slider" id="pitch-level-standby">
+                                    <div class="slider-value">1.0x</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
