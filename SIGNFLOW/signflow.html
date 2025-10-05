@@ -714,7 +714,7 @@
             100% { transform: translateY(0) rotate(360deg) scale(1); }
         }
 
-        /* New styles for webcam */
+        /* Webcam styles */
         #videoElement {
             width: 100%;
             height: 100%;
@@ -732,6 +732,7 @@
             background-color: #ef4444;
             box-shadow: 0 0 10px #ef4444;
             animation: pulse 1s infinite;
+            display: none;
         }
 
         @keyframes pulse {
@@ -751,8 +752,42 @@
             font-weight: 600;
         }
 
+        .status-message {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        /* New layout styles */
+        .camera-transcript-container {
+            display: flex;
+            gap: 30px;
+            align-items: stretch;
+        }
+
+        .camera-section {
+            flex: 2;
+        }
+
+        .transcript-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
         @media (max-width: 768px) {
             .main-content {
+                flex-direction: column;
+            }
+            
+            .camera-transcript-container {
                 flex-direction: column;
             }
             
@@ -806,11 +841,11 @@
                 <div class="card stats">
                     <div class="stat-item">
                         <div class="stat-label">WORDS TRANSLATED</div>
-                        <div class="stat-value">2</div>
+                        <div class="stat-value" id="wordsTranslated">2</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-label">ACCURACY</div>
-                        <div class="stat-value">70%</div>
+                        <div class="stat-value" id="accuracyValue">70%</div>
                     </div>
                 </div>
                 <div class="card status">
@@ -819,42 +854,55 @@
                     </div>
                     <div class="status-indicator"></div>
                 </div>
-                <div class="card webcam-container">
-                    <div class="webcam-title">
-                        <i class="fas fa-video icon"></i> LIVE CAMERA FEED
+                
+                <!-- New Camera + Transcript Layout -->
+                <div class="camera-transcript-container">
+                    <div class="camera-section">
+                        <div class="card webcam-container">
+                            <div class="webcam-title">
+                                <i class="fas fa-video icon"></i> LIVE CAMERA FEED
+                            </div>
+                            <div class="webcam-feed">
+                                <video id="videoElement" autoplay playsinline></video>
+                                <div class="capture-indicator" id="captureIndicator"></div>
+                                <div class="capture-count" id="captureCount">Captures: 0</div>
+                                <div class="status-message" id="statusMessage">Ready</div>
+                            </div>
+                            <div class="webcam-subtitle">Sign language detection in progress. Keep your hands visible to the camera.</div>
+                            <button class="detection-button" id="detectionButton">
+                                <i class="fas fa-stop-circle icon"></i> STOP DETECTION
+                            </button>
+                        </div>
                     </div>
-                    <div class="webcam-feed">
-                        <video id="videoElement" autoplay playsinline></video>
-                        <div class="capture-indicator" id="captureIndicator"></div>
-                        <div class="capture-count" id="captureCount">Captures: 0</div>
-                    </div>
-                    <div class="webcam-subtitle">Sign language detection in progress. Keep your hands visible to the camera.</div>
-                    <button class="detection-button" id="detectionButton">
-                        <i class="fas fa-stop-circle icon"></i> STOP DETECTION
-                    </button>
-                </div>
-            </div>
-            <div class="right-panel">
-                <div class="card transcript-container">
-                    <div class="transcript-title">
-                        <i class="fas fa-comment-alt icon"></i> LIVE TRANSCRIPT
-                    </div>
-                    <div class="transcript-content active">
-                        <div class="transcript-text">Welcome Love</div>
-                        <div class="confidence">
-                            <div class="confidence-label">CONFIDENCE LEVEL</div>
-                            <div class="confidence-value">78%</div>
+                    
+                    <div class="transcript-section">
+                        <div class="card transcript-container">
+                            <div class="transcript-title">
+                                <i class="fas fa-comment-alt icon"></i> LIVE TRANSCRIPT
+                            </div>
+                            <div class="transcript-content active">
+                                <div class="transcript-text" id="transcriptText">Welcome Love</div>
+                                <div class="confidence">
+                                    <div class="confidence-label">CONFIDENCE LEVEL</div>
+                                    <div class="confidence-value" id="confidenceValue">78%</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card speech-container">
+                            <div class="speech-title">
+                                <i class="fas fa-volume-up icon"></i> CONVERT TO SPEECH
+                            </div>
+                            <button class="convert-button" id="convertButton">
+                                <i class="fas fa-play icon"></i> CONVERT TO SPEECH
+                            </button>
                         </div>
                     </div>
                 </div>
-                <div class="card speech-container">
-                    <div class="speech-title">
-                        <i class="fas fa-volume-up icon"></i> CONVERT TO SPEECH
-                    </div>
-                    <button class="convert-button" id="convertButton">
-                        <i class="fas fa-play icon"></i> CONVERT TO SPEECH
-                    </button>
-                </div>
+            </div>
+            
+            <div class="right-panel">
+                <!-- Voice Settings moved here -->
                 <div class="card settings-container">
                     <div class="settings-title">
                         <i class="fas fa-sliders-h icon"></i> VOICE SETTINGS
@@ -961,10 +1009,15 @@
         const videoElement = document.getElementById('videoElement');
         const captureIndicator = document.getElementById('captureIndicator');
         const captureCountElement = document.getElementById('captureCount');
+        const statusMessage = document.getElementById('statusMessage');
         const detectionButton = document.getElementById('detectionButton');
         const standbyDetectionButton = document.getElementById('standbyDetectionButton');
         const convertButton = document.getElementById('convertButton');
         const standbyConvertButton = document.getElementById('standbyConvertButton');
+        const transcriptText = document.getElementById('transcriptText');
+        const confidenceValue = document.getElementById('confidenceValue');
+        const wordsTranslated = document.getElementById('wordsTranslated');
+        const accuracyValue = document.getElementById('accuracyValue');
 
         // Initialize webcam
         async function initWebcam() {
@@ -976,15 +1029,17 @@
                     } 
                 });
                 videoElement.srcObject = videoStream;
+                statusMessage.textContent = "Camera Active";
                 return true;
             } catch (error) {
                 console.error('Error accessing webcam:', error);
+                statusMessage.textContent = "Camera Error";
                 alert('Unable to access webcam. Please check permissions and try again.');
                 return false;
             }
         }
 
-        // Start capturing images every 0.5 seconds
+        // Start capturing images every 2 seconds
         function startCapturing() {
             if (!isCapturing) {
                 isCapturing = true;
@@ -993,10 +1048,11 @@
                 
                 captureInterval = setInterval(() => {
                     captureImage();
-                }, 500); // 0.5 seconds
+                }, 2000); // 2 seconds
                 
                 captureIndicator.style.display = 'block';
                 detectionButton.innerHTML = '<i class="fas fa-stop-circle icon"></i> STOP DETECTION';
+                statusMessage.textContent = "Capturing every 2 seconds...";
             }
         }
 
@@ -1007,6 +1063,7 @@
                 clearInterval(captureInterval);
                 captureIndicator.style.display = 'none';
                 detectionButton.innerHTML = '<i class="fas fa-play-circle icon"></i> START DETECTION';
+                statusMessage.textContent = "Ready";
             }
         }
 
@@ -1030,9 +1087,8 @@
             captureCount++;
             updateCaptureCount();
             
-            // In a real application, you would send this image data to your ML model
-            // For now, we'll just log it and simulate processing
-            processCapturedImage(imageData);
+            // Send image to backend for processing
+            sendImageToBackend(imageData);
         }
 
         // Update the capture count display
@@ -1040,25 +1096,62 @@
             captureCountElement.textContent = `Captures: ${captureCount}`;
         }
 
-        // Simulate processing the captured image
-        function processCapturedImage(imageData) {
-            // In a real application, this is where you would send the image to your ML model
-            // For demonstration, we'll just log that an image was captured
-            console.log(`Image captured #${captureCount} at ${new Date().toLocaleTimeString()}`);
-            
-            // Simulate processing delay
-            setTimeout(() => {
-                // Randomly update the transcript to simulate detection
-                if (Math.random() > 0.7) {
-                    const words = ['Hello', 'Thank you', 'Please', 'Help', 'Water', 'Food', 'Yes', 'No', 'Goodbye'];
-                    const randomWord = words[Math.floor(Math.random() * words.length)];
-                    document.querySelector('.transcript-text').textContent = randomWord;
-                    
-                    // Update confidence level
-                    const confidence = Math.floor(Math.random() * 30) + 70;
-                    document.querySelector('.confidence-value').textContent = `${confidence}%`;
+        // Send image to Python backend
+        async function sendImageToBackend(imageData) {
+            try {
+                // Extract base64 data
+                const base64Data = imageData.split(',')[1];
+                
+                const response = await fetch('http://localhost:5000/process-image', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        image: base64Data,
+                        timestamp: new Date().toISOString()
+                    })
+                });
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    updateUIWithPrediction(result);
                 }
-            }, 100);
+            } catch (error) {
+                console.error('Error sending image to backend:', error);
+                // Simulate prediction for demo purposes
+                simulatePrediction();
+            }
+        }
+
+        // Update UI with prediction results
+        function updateUIWithPrediction(result) {
+            if (result.prediction) {
+                transcriptText.textContent = result.prediction;
+                confidenceValue.textContent = `${result.confidence}%`;
+                
+                // Update words translated count
+                if (result.prediction.length > 0) {
+                    const currentCount = parseInt(wordsTranslated.textContent);
+                    wordsTranslated.textContent = currentCount + 1;
+                }
+            }
+        }
+
+        // Simulate prediction for demo (remove when backend is ready)
+        function simulatePrediction() {
+            if (Math.random() > 0.7) {
+                const words = ['Hello', 'Thank you', 'Please', 'Help', 'Water', 'Food', 'Yes', 'No', 'Goodbye'];
+                const randomWord = words[Math.floor(Math.random() * words.length)];
+                transcriptText.textContent = randomWord;
+                
+                const confidence = Math.floor(Math.random() * 30) + 70;
+                confidenceValue.textContent = `${confidence}%`;
+                
+                // Update words translated count
+                const currentCount = parseInt(wordsTranslated.textContent);
+                wordsTranslated.textContent = currentCount + 1;
+            }
         }
 
         // Toggle between active and standby modes
@@ -1073,9 +1166,6 @@
                 standbyTab.classList.remove('active');
                 activeMode.classList.remove('hidden');
                 standbyMode.classList.add('hidden');
-                
-                // Stop capturing when switching to active mode without webcam
-                stopCapturing();
             } else {
                 activeTab.classList.remove('active');
                 standbyTab.classList.add('active');
@@ -1089,39 +1179,53 @@
 
         // Convert text to speech
         function convertToSpeech() {
-            const transcriptText = document.querySelector('.transcript-text');
-            if (transcriptText && transcriptText.textContent !== 'Welcome Love') {
+            const textToSpeak = transcriptText.textContent;
+            if (textToSpeak && textToSpeak !== 'Welcome Love') {
                 // Create a visual feedback
                 const originalHTML = this.innerHTML;
                 this.innerHTML = '<i class="fas fa-volume-up icon"></i> CONVERTING...';
                 this.style.background = 'var(--accent)';
                 
-                setTimeout(() => {
+                // Use Web Speech API for TTS
+                const speech = new SpeechSynthesisUtterance();
+                speech.text = textToSpeak;
+                speech.rate = parseFloat(document.getElementById('speech-rate').value);
+                speech.pitch = parseFloat(document.getElementById('pitch-level').value);
+                
+                speech.onend = () => {
                     this.innerHTML = originalHTML;
                     this.style.background = '';
-                    // Show success message
-                    const successMsg = document.createElement('div');
-                    successMsg.textContent = `"${transcriptText.textContent}" converted to speech`;
-                    successMsg.style.position = 'fixed';
-                    successMsg.style.bottom = '30px';
-                    successMsg.style.left = '50%';
-                    successMsg.style.transform = 'translateX(-50%)';
-                    successMsg.style.background = 'var(--accent)';
-                    successMsg.style.color = 'white';
-                    successMsg.style.padding = '15px 30px';
-                    successMsg.style.borderRadius = '50px';
-                    successMsg.style.fontWeight = '700';
-                    successMsg.style.boxShadow = '0 10px 30px rgba(6, 182, 212, 0.5)';
-                    successMsg.style.zIndex = '1000';
-                    document.body.appendChild(successMsg);
                     
-                    setTimeout(() => {
-                        document.body.removeChild(successMsg);
-                    }, 3000);
-                }, 1500);
+                    // Show success message
+                    showNotification(`"${textToSpeak}" converted to speech`);
+                };
+                
+                window.speechSynthesis.speak(speech);
             } else {
                 alert('No text available for conversion. Please start detection first.');
             }
+        }
+
+        // Show notification
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.textContent = message;
+            notification.style.position = 'fixed';
+            notification.style.bottom = '30px';
+            notification.style.left = '50%';
+            notification.style.transform = 'translateX(-50%)';
+            notification.style.background = 'var(--accent)';
+            notification.style.color = 'white';
+            notification.style.padding = '15px 30px';
+            notification.style.borderRadius = '50px';
+            notification.style.fontWeight = '700';
+            notification.style.boxShadow = '0 10px 30px rgba(6, 182, 212, 0.5)';
+            notification.style.zIndex = '1000';
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                document.body.removeChild(notification);
+            }, 3000);
         }
 
         // Event listeners
@@ -1155,16 +1259,11 @@
                 const element = document.createElement('div');
                 element.classList.add('floating-element');
                 
-                // Random size between 20px and 80px
                 const size = Math.random() * 60 + 20;
                 element.style.width = `${size}px`;
                 element.style.height = `${size}px`;
-                
-                // Random position
                 element.style.left = `${Math.random() * 100}%`;
                 element.style.top = `${Math.random() * 100}%`;
-                
-                // Random animation delay and duration
                 element.style.animationDelay = `${Math.random() * 20}s`;
                 element.style.animationDuration = `${Math.random() * 20 + 20}s`;
                 
@@ -1188,9 +1287,6 @@
         document.addEventListener('DOMContentLoaded', function() {
             initFloatingElements();
             initSliders();
-            
-            // Initialize webcam in active mode
-            initWebcam();
         });
     </script>
 </body>
