@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SignFlow | Sign Language Translator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #3B82F6;
+            --primary-dark: #2563EB;
+            --primary-light: #60A5FA;
+            --accent: #06B6D4;
+            --accent-dark: #0891B2;
+            --accent-light: #22D3EE;
+            --background: #0F172A;
+            --surface: #1E293B;
+            --text-primary: #F8FAFC;
+            --text-secondary: #E2E8F0;
+            --text-tertiary: #94A3B8;
+            --border: #334155;
+            --gradient: linear-gradient(135deg, #3B82F6, #06B6D4, #8B5CF6);
+            --gradient-light: linear-gradient(135deg, #60A5FA, #22D3EE, #A78BFA);
+            --glass: rgba(30, 41, 59, 0.7);
+            --glass-border: rgba(51, 65, 85, 0.5);
+            --shadow: 0 20px 40px rgba(59, 130, 246, 0.15);
+            --glow: 0 0 40px rgba(59, 130, 246, 0.25);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0F172A, #1E293B, #334155);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(6, 182, 212, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
+            z-index: -1;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1400px;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .logo-glow {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: var(--gradient);
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.25;
+            z-index: -1;
+            animation: pulse-glow 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 0.25; transform: scale(1); }
+            50% { opacity: 0.35; transform: scale(1.1); }
+        }
+
+        .logo-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--gradient);
+            border-radius: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--glow);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .logo-icon::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
+            transform: rotate(45deg);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .logo-icon:hover {
+            transform: rotate(5deg) scale(1.05);
+            box-shadow: 0 0 60px rgba(59, 130, 246, 0.4);
+        }
+
+        h1 {
+            font-size: 4.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #F8FAFC, #60A5FA, #22D3EE);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            letter-spacing: -1px;
+            position: relative;
+            display: inline-block;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 10%;
+            width: 80%;
+            height: 4px;
+            background: var(--gradient);
+            border-radius: 2px;
+            filter: blur(2px);
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+            position: relative;
+        }
+
+        .subtitle::before, .subtitle::after {
+            content: '✦';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--accent);
+            font-size: 1.2rem;
+        }
+
+        .subtitle::before {
+            left: -30px;
+        }
+
+        .subtitle::after {
+            right: -30px;
+        }
+
+        .main-content {
+            display: flex;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .left-panel, .right-panel {
+            flex: 1;
+            min-width: 320px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border-radius: 28px;
+            padding: 35px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--glass-border);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: -1;
+        }
+
+        .card:hover::before {
+            opacity: 0.05;
+        }
+
+        .card:hover {
+            transform: translateY(-12px) scale(1.01);
+            box-shadow: 0 35px 60px rgba(59, 130, 246, 0.2), var(--glow);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 20px;
+            flex: 1;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 60px;
+            width: 2px;
+            background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.2), transparent);
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+
+        .stat-value {
+            font-size: 3.5rem;
+            font-weight: 900;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            position: relative;
+            display: inline-block;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .status {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 25px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .status::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient);
+            opacity: 0.05;
+            z-index: -1;
+        }
+
+        .status-text {
+            font-size: 1.4rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .status-indicator {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 25px var(--accent);
+            position: relative;
+            animation: glow-pulse 2s infinite;
+        }
+
+        @keyframes glow-pulse {
+            0%, 100% { box-shadow: 0 0 25px var(--accent); }
+            50% { box-shadow: 0 0 35px var(--accent); }
+        }
+
+        .status-standby {
+            background: var(--primary);
+            box-shadow: 0 0 25px var(--primary);
+            animation: glow-pulse-standby 2s infinite;
+        }
+
+        @keyframes glow-pulse-standby {
+            0%, 100% { box-shadow: 0 0 25px var(--primary); }
+            50% { box-shadow: 0 0 35px var(--primary); }
+        }
+
+        .webcam-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .webcam-title {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            letter-spacing: 2px;
+        }
+
+        .webcam-feed {
+            width: 100%;
+            height: 320px;
+            background: linear-gradient(135deg, #1E293B, #0F172A);
+            border-radius: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.5);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .webcam-feed::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.03), transparent);
+            animation: shimmer 4s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .webcam-placeholder {
+            font-size: 3rem;
+            font-weight: 900;
+            color: white;
+            letter-spacing: 6px;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            z-index: 2;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .webcam-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            text-align: center;
+            line-height: 1.6;
+            max-width: 90%;
+        }
+
+        .detection-button {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            padding: 22px 50px;
+            border-radius: 60px;
+            font-size: 1.3rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 1px;
+        }
+
+        .detection-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.6s;
+        }
+
+        .detection-button:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(59, 130, 246, 0.5), 0 0 30px rgba(59, 130, 246, 0.3);
+        }
+
+        .detection-button:hover::before {
+            left: 100%;
+        }
+
+        .detection-button:active {
+            transform: translateY(-2px);
+        }
+
+        .transcript-title {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            letter-spacing: 1px;
+        }
+
+        .transcript-content {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            padding: 35px;
+            min-height: 220px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 2px dashed rgba(255, 255, 255, 0.1);
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        .transcript-content.active {
+            border-color: var(--accent);
+            background: rgba(6, 182, 212, 0.05);
+            box-shadow: 0 0 30px rgba(6, 182, 212, 0.1);
+        }
+
+        .transcript-text {
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--text-primary);
+            margin-bottom: 25px;
+            text-align: center;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .transcript-subtext {
+            font-size: 1.2rem;
+            color: var(--text-tertiary);
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        .confidence {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 25px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px 25px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .confidence-label {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+        }
+
+        .confidence-value {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--accent);
+            text-shadow: 0 0 10px rgba(6, 182, 212, 0.5);
+        }
+
+        .speech-container {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .speech-title {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            letter-spacing: 1px;
+        }
+
+        .convert-button {
+            background: var(--gradient-light);
+            color: white;
+            border: none;
+            padding: 24px 40px;
+            border-radius: 60px;
+            font-size: 1.3rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 1px;
+        }
+
+        .convert-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.6s;
+        }
+
+        .convert-button:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(59, 130, 246, 0.5), 0 0 30px rgba(59, 130, 246, 0.3);
+        }
+
+        .convert-button:hover::before {
+            left: 100%;
+        }
+
+        .settings-title {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            letter-spacing: 1px;
+        }
+
+        .setting-item {
+            margin-bottom: 35px;
+        }
+
+        .setting-label {
+            font-size: 1.3rem;
+            margin-bottom: 18px;
+            display: block;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .slider {
+            flex: 1;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            outline: none;
+            -webkit-appearance: none;
+            position: relative;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.2s ease;
+            border: 4px solid white;
+        }
+
+        .slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            background: var(--primary-light);
+            box-shadow: 0 0 20px var(--primary);
+        }
+
+        .slider-value {
+            width: 70px;
+            text-align: center;
+            font-weight: 800;
+            color: var(--text-primary);
+            font-size: 1.3rem;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px 15px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .tabs {
+            display: flex;
+            gap: 25px;
+            margin-bottom: 40px;
+            justify-content: center;
+        }
+
+        .tab {
+            padding: 18px 35px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 60px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.7);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+        }
+
+        .tab.active {
+            background: rgba(59, 130, 246, 0.2);
+            color: white;
+            border-color: rgba(59, 130, 246, 0.5);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+            transform: translateY(-5px);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .icon {
+            font-size: 1.4rem;
+        }
+
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .floating-element {
+            position: absolute;
+            background: var(--gradient);
+            border-radius: 50%;
+            animation: float 20s infinite linear;
+            opacity: 0.08;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg) scale(1); }
+            33% { transform: translateY(-30px) rotate(120deg) scale(1.1); }
+            66% { transform: translateY(15px) rotate(240deg) scale(0.9); }
+            100% { transform: translateY(0) rotate(360deg) scale(1); }
+        }
+
+        /* New styles for webcam */
+        #videoElement {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 24px;
+        }
+
+        .capture-indicator {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background-color: #ef4444;
+            box-shadow: 0 0 10px #ef4444;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .capture-count {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            h1 {
+                font-size: 3.5rem;
+            }
+            
+            .stats {
+                flex-direction: column;
+                gap: 25px;
+            }
+            
+            .stat-item:not(:last-child)::after {
+                display: none;
+            }
+            
+            .logo-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-elements" id="floatingContainer"></div>
+
+    <div class="container">
+        <header>
+            <div class="logo-container">
+                <div class="logo-glow"></div>
+                <div class="logo-icon">
+                    <i class="fas fa-hands fa-2x" style="color: white;"></i>
+                </div>
+                <h1>SignFlow</h1>
+            </div>
+            <div class="subtitle">Sign language detection and translation</div>
+        </header>
+
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('active')">
+                <i class="fas fa-play-circle icon"></i> Active Mode
+            </div>
+            <div class="tab" onclick="switchTab('standby')">
+                <i class="fas fa-pause-circle icon"></i> Standby Mode
+            </div>
+        </div>
+
+        <!-- Active Mode -->
+        <div id="active-mode" class="main-content">
+            <div class="left-panel">
+                <div class="card stats">
+                    <div class="stat-item">
+                        <div class="stat-label">WORDS TRANSLATED</div>
+                        <div class="stat-value">2</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">ACCURACY</div>
+                        <div class="stat-value">70%</div>
+                    </div>
+                </div>
+                <div class="card status">
+                    <div class="status-text">
+                        <i class="fas fa-bolt icon"></i> ACTIVE TRANSLATION
+                    </div>
+                    <div class="status-indicator"></div>
+                </div>
+                <div class="card webcam-container">
+                    <div class="webcam-title">
+                        <i class="fas fa-video icon"></i> LIVE CAMERA FEED
+                    </div>
+                    <div class="webcam-feed">
+                        <video id="videoElement" autoplay playsinline></video>
+                        <div class="capture-indicator" id="captureIndicator"></div>
+                        <div class="capture-count" id="captureCount">Captures: 0</div>
+                    </div>
+                    <div class="webcam-subtitle">Sign language detection in progress. Keep your hands visible to the camera.</div>
+                    <button class="detection-button" id="detectionButton">
+                        <i class="fas fa-stop-circle icon"></i> STOP DETECTION
+                    </button>
+                </div>
+            </div>
+            <div class="right-panel">
+                <div class="card transcript-container">
+                    <div class="transcript-title">
+                        <i class="fas fa-comment-alt icon"></i> LIVE TRANSCRIPT
+                    </div>
+                    <div class="transcript-content active">
+                        <div class="transcript-text">Welcome Love</div>
+                        <div class="confidence">
+                            <div class="confidence-label">CONFIDENCE LEVEL</div>
+                            <div class="confidence-value">78%</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card speech-container">
+                    <div class="speech-title">
+                        <i class="fas fa-volume-up icon"></i> CONVERT TO SPEECH
+                    </div>
+                    <button class="convert-button" id="convertButton">
+                        <i class="fas fa-play icon"></i> CONVERT TO SPEECH
+                    </button>
+                </div>
+                <div class="card settings-container">
+                    <div class="settings-title">
+                        <i class="fas fa-sliders-h icon"></i> VOICE SETTINGS
+                    </div>
+                    <div class="setting-item">
+                        <label class="setting-label">SPEECH RATE</label>
+                        <div class="slider-container">
+                            <input type="range" min="0.5" max="2.0" step="0.1" value="1.0" class="slider" id="speech-rate">
+                            <div class="slider-value">1.0x</div>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <label class="setting-label">PITCH LEVEL</label>
+                        <div class="slider-container">
+                            <input type="range" min="0.5" max="2.0" step="0.1" value="1.0" class="slider" id="pitch-level">
+                            <div class="slider-value">1.0x</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Standby Mode -->
+        <div id="standby-mode" class="main-content hidden">
+            <div class="left-panel">
+                <div class="card stats">
+                    <div class="stat-item">
+                        <div class="stat-label">WORDS TRANSLATED</div>
+                        <div class="stat-value">0</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">ACCURACY</div>
+                        <div class="stat-value">0%</div>
+                    </div>
+                </div>
+                <div class="card status">
+                    <div class="status-text">
+                        <i class="fas fa-pause-circle icon"></i> STANDBY MODE
+                    </div>
+                    <div class="status-indicator status-standby"></div>
+                </div>
+                <div class="card webcam-container">
+                    <div class="webcam-title">
+                        <i class="fas fa-video icon"></i> CAMERA READY
+                    </div>
+                    <div class="webcam-feed">
+                        <div class="webcam-placeholder">WEBCAM</div>
+                    </div>
+                    <div class="webcam-subtitle">Camera is ready. Click start to begin sign language detection.</div>
+                    <button class="detection-button" id="standbyDetectionButton">
+                        <i class="fas fa-play-circle icon"></i> START DETECTION
+                    </button>
+                </div>
+            </div>
+            <div class="right-panel">
+                <div class="card transcript-container">
+                    <div class="transcript-title">
+                        <i class="fas fa-comment-alt icon"></i> LIVE TRANSCRIPT
+                    </div>
+                    <div class="transcript-content">
+                        <div class="transcript-subtext">Translated words will appear here</div>
+                        <div class="transcript-subtext">Start detection to begin translation</div>
+                    </div>
+                </div>
+                <div class="card speech-container">
+                    <div class="speech-title">
+                        <i class="fas fa-volume-up icon"></i> CONVERT TO SPEECH
+                    </div>
+                    <button class="convert-button" id="standbyConvertButton">
+                        <i class="fas fa-play icon"></i> CONVERT TO SPEECH
+                    </button>
+                </div>
+                <div class="card settings-container">
+                    <div class="settings-title">
+                        <i class="fas fa-sliders-h icon"></i> VOICE SETTINGS
+                    </div>
+                    <div class="setting-item">
+                        <label class="setting-label">SPEECH RATE</label>
+                        <div class="slider-container">
+                            <input type="range" min="0.5" max="2.0" step="0.1" value="1.0" class="slider" id="speech-rate-standby">
+                            <div class="slider-value">1.0x</div>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <label class="setting-label">PITCH LEVEL</label>
+                        <div class="slider-container">
+                            <input type="range" min="0.5" max="2.0" step="0.1" value="1.0" class="slider" id="pitch-level-standby">
+                            <div class="slider-value">1.0x</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Webcam and capture variables
+        let videoStream = null;
+        let captureInterval = null;
+        let captureCount = 0;
+        let isCapturing = false;
+
+        // DOM elements
+        const videoElement = document.getElementById('videoElement');
+        const captureIndicator = document.getElementById('captureIndicator');
+        const captureCountElement = document.getElementById('captureCount');
+        const detectionButton = document.getElementById('detectionButton');
+        const standbyDetectionButton = document.getElementById('standbyDetectionButton');
+        const convertButton = document.getElementById('convertButton');
+        const standbyConvertButton = document.getElementById('standbyConvertButton');
+
+        // Initialize webcam
+        async function initWebcam() {
+            try {
+                videoStream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { 
+                        width: { ideal: 1280 },
+                        height: { ideal: 720 }
+                    } 
+                });
+                videoElement.srcObject = videoStream;
+                return true;
+            } catch (error) {
+                console.error('Error accessing webcam:', error);
+                alert('Unable to access webcam. Please check permissions and try again.');
+                return false;
+            }
+        }
+
+        // Start capturing images every 0.5 seconds
+        function startCapturing() {
+            if (!isCapturing) {
+                isCapturing = true;
+                captureCount = 0;
+                updateCaptureCount();
+                
+                captureInterval = setInterval(() => {
+                    captureImage();
+                }, 500); // 0.5 seconds
+                
+                captureIndicator.style.display = 'block';
+                detectionButton.innerHTML = '<i class="fas fa-stop-circle icon"></i> STOP DETECTION';
+            }
+        }
+
+        // Stop capturing images
+        function stopCapturing() {
+            if (isCapturing) {
+                isCapturing = false;
+                clearInterval(captureInterval);
+                captureIndicator.style.display = 'none';
+                detectionButton.innerHTML = '<i class="fas fa-play-circle icon"></i> START DETECTION';
+            }
+        }
+
+        // Capture an image from the video stream
+        function captureImage() {
+            // Create a canvas element to capture the frame
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            
+            // Set canvas dimensions to match video
+            canvas.width = videoElement.videoWidth;
+            canvas.height = videoElement.videoHeight;
+            
+            // Draw the current video frame to the canvas
+            context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+            
+            // Convert canvas to image data (base64)
+            const imageData = canvas.toDataURL('image/jpeg', 0.8);
+            
+            // Increment capture count and update display
+            captureCount++;
+            updateCaptureCount();
+            
+            // In a real application, you would send this image data to your ML model
+            // For now, we'll just log it and simulate processing
+            processCapturedImage(imageData);
+        }
+
+        // Update the capture count display
+        function updateCaptureCount() {
+            captureCountElement.textContent = `Captures: ${captureCount}`;
+        }
+
+        // Simulate processing the captured image
+        function processCapturedImage(imageData) {
+            // In a real application, this is where you would send the image to your ML model
+            // For demonstration, we'll just log that an image was captured
+            console.log(`Image captured #${captureCount} at ${new Date().toLocaleTimeString()}`);
+            
+            // Simulate processing delay
+            setTimeout(() => {
+                // Randomly update the transcript to simulate detection
+                if (Math.random() > 0.7) {
+                    const words = ['Hello', 'Thank you', 'Please', 'Help', 'Water', 'Food', 'Yes', 'No', 'Goodbye'];
+                    const randomWord = words[Math.floor(Math.random() * words.length)];
+                    document.querySelector('.transcript-text').textContent = randomWord;
+                    
+                    // Update confidence level
+                    const confidence = Math.floor(Math.random() * 30) + 70;
+                    document.querySelector('.confidence-value').textContent = `${confidence}%`;
+                }
+            }, 100);
+        }
+
+        // Toggle between active and standby modes
+        function switchTab(mode) {
+            const activeTab = document.querySelector('.tab.active');
+            const standbyTab = document.querySelector('.tab:not(.active)');
+            const activeMode = document.getElementById('active-mode');
+            const standbyMode = document.getElementById('standby-mode');
+            
+            if (mode === 'active') {
+                activeTab.classList.add('active');
+                standbyTab.classList.remove('active');
+                activeMode.classList.remove('hidden');
+                standbyMode.classList.add('hidden');
+                
+                // Stop capturing when switching to active mode without webcam
+                stopCapturing();
+            } else {
+                activeTab.classList.remove('active');
+                standbyTab.classList.add('active');
+                activeMode.classList.add('hidden');
+                standbyMode.classList.remove('hidden');
+                
+                // Stop capturing when switching to standby mode
+                stopCapturing();
+            }
+        }
+
+        // Convert text to speech
+        function convertToSpeech() {
+            const transcriptText = document.querySelector('.transcript-text');
+            if (transcriptText && transcriptText.textContent !== 'Welcome Love') {
+                // Create a visual feedback
+                const originalHTML = this.innerHTML;
+                this.innerHTML = '<i class="fas fa-volume-up icon"></i> CONVERTING...';
+                this.style.background = 'var(--accent)';
+                
+                setTimeout(() => {
+                    this.innerHTML = originalHTML;
+                    this.style.background = '';
+                    // Show success message
+                    const successMsg = document.createElement('div');
+                    successMsg.textContent = `"${transcriptText.textContent}" converted to speech`;
+                    successMsg.style.position = 'fixed';
+                    successMsg.style.bottom = '30px';
+                    successMsg.style.left = '50%';
+                    successMsg.style.transform = 'translateX(-50%)';
+                    successMsg.style.background = 'var(--accent)';
+                    successMsg.style.color = 'white';
+                    successMsg.style.padding = '15px 30px';
+                    successMsg.style.borderRadius = '50px';
+                    successMsg.style.fontWeight = '700';
+                    successMsg.style.boxShadow = '0 10px 30px rgba(6, 182, 212, 0.5)';
+                    successMsg.style.zIndex = '1000';
+                    document.body.appendChild(successMsg);
+                    
+                    setTimeout(() => {
+                        document.body.removeChild(successMsg);
+                    }, 3000);
+                }, 1500);
+            } else {
+                alert('No text available for conversion. Please start detection first.');
+            }
+        }
+
+        // Event listeners
+        detectionButton.addEventListener('click', function() {
+            if (isCapturing) {
+                stopCapturing();
+            } else {
+                startCapturing();
+            }
+        });
+
+        standbyDetectionButton.addEventListener('click', function() {
+            // Initialize webcam and switch to active mode
+            initWebcam().then(success => {
+                if (success) {
+                    switchTab('active');
+                    startCapturing();
+                }
+            });
+        });
+
+        convertButton.addEventListener('click', convertToSpeech);
+        standbyConvertButton.addEventListener('click', convertToSpeech);
+
+        // Initialize floating elements
+        function initFloatingElements() {
+            const container = document.getElementById('floatingContainer');
+            const elementCount = 15;
+            
+            for (let i = 0; i < elementCount; i++) {
+                const element = document.createElement('div');
+                element.classList.add('floating-element');
+                
+                // Random size between 20px and 80px
+                const size = Math.random() * 60 + 20;
+                element.style.width = `${size}px`;
+                element.style.height = `${size}px`;
+                
+                // Random position
+                element.style.left = `${Math.random() * 100}%`;
+                element.style.top = `${Math.random() * 100}%`;
+                
+                // Random animation delay and duration
+                element.style.animationDelay = `${Math.random() * 20}s`;
+                element.style.animationDuration = `${Math.random() * 20 + 20}s`;
+                
+                container.appendChild(element);
+            }
+        }
+
+        // Initialize sliders
+        function initSliders() {
+            const sliders = document.querySelectorAll('.slider');
+            sliders.forEach(slider => {
+                const valueDisplay = slider.nextElementSibling;
+                
+                slider.addEventListener('input', function() {
+                    valueDisplay.textContent = `${this.value}x`;
+                });
+            });
+        }
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            initFloatingElements();
+            initSliders();
+            
+            // Initialize webcam in active mode
+            initWebcam();
+        });
+    </script>
+</body>
+</html>
