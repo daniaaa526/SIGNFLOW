@@ -63,7 +63,7 @@
 
         .container {
             width: 100%;
-            max-width: 1400px;
+            max-width: 1600px;
             display: flex;
             flex-direction: column;
             gap: 40px;
@@ -359,7 +359,7 @@
 
         .webcam-feed {
             width: 100%;
-            height: 320px;
+            height: 400px;
             background: linear-gradient(135deg, #1E293B, #0F172A);
             border-radius: 24px;
             display: flex;
@@ -466,7 +466,7 @@
             background: rgba(255, 255, 255, 0.05);
             border-radius: 24px;
             padding: 35px;
-            min-height: 220px;
+            min-height: 300px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -483,7 +483,7 @@
         }
 
         .transcript-text {
-            font-size: 3rem;
+            font-size: 4rem;
             font-weight: 900;
             color: var(--text-primary);
             margin-bottom: 25px;
@@ -493,6 +493,7 @@
             background-clip: text;
             color: transparent;
             text-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            line-height: 1.2;
         }
 
         .transcript-subtext {
@@ -764,15 +765,18 @@
             font-weight: 600;
         }
 
-        /* New layout styles */
-        .camera-transcript-container {
+        /* New layout styles - Camera on left, Transcript on right */
+        .detection-layout {
             display: flex;
-            gap: 30px;
+            gap: 40px;
             align-items: stretch;
         }
 
         .camera-section {
             flex: 2;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
         }
 
         .transcript-section {
@@ -782,12 +786,24 @@
             gap: 30px;
         }
 
+        .wide-camera .webcam-feed {
+            height: 500px;
+        }
+
+        .big-transcript .transcript-content {
+            min-height: 400px;
+        }
+
+        .big-transcript .transcript-text {
+            font-size: 5rem;
+        }
+
         @media (max-width: 768px) {
             .main-content {
                 flex-direction: column;
             }
             
-            .camera-transcript-container {
+            .detection-layout {
                 flex-direction: column;
             }
             
@@ -807,6 +823,10 @@
             .logo-container {
                 flex-direction: column;
                 gap: 15px;
+            }
+            
+            .big-transcript .transcript-text {
+                font-size: 3rem;
             }
         }
     </style>
@@ -855,9 +875,9 @@
                     <div class="status-indicator"></div>
                 </div>
                 
-                <!-- New Camera + Transcript Layout -->
-                <div class="camera-transcript-container">
-                    <div class="camera-section">
+                <!-- New Wide Camera + Big Transcript Layout -->
+                <div class="detection-layout">
+                    <div class="camera-section wide-camera">
                         <div class="card webcam-container">
                             <div class="webcam-title">
                                 <i class="fas fa-video icon"></i> LIVE CAMERA FEED
@@ -875,13 +895,13 @@
                         </div>
                     </div>
                     
-                    <div class="transcript-section">
+                    <div class="transcript-section big-transcript">
                         <div class="card transcript-container">
                             <div class="transcript-title">
                                 <i class="fas fa-comment-alt icon"></i> LIVE TRANSCRIPT
                             </div>
                             <div class="transcript-content active">
-                                <div class="transcript-text" id="transcriptText">Welcome Love</div>
+                                <div class="transcript-text" id="transcriptText">Welcome</div>
                                 <div class="confidence">
                                     <div class="confidence-label">CONFIDENCE LEVEL</div>
                                     <div class="confidence-value" id="confidenceValue">78%</div>
@@ -902,7 +922,7 @@
             </div>
             
             <div class="right-panel">
-                <!-- Voice Settings moved here -->
+                <!-- Voice Settings -->
                 <div class="card settings-container">
                     <div class="settings-title">
                         <i class="fas fa-sliders-h icon"></i> VOICE SETTINGS
@@ -1180,7 +1200,7 @@
         // Convert text to speech
         function convertToSpeech() {
             const textToSpeak = transcriptText.textContent;
-            if (textToSpeak && textToSpeak !== 'Welcome Love') {
+            if (textToSpeak && textToSpeak !== 'Welcome') {
                 // Create a visual feedback
                 const originalHTML = this.innerHTML;
                 this.innerHTML = '<i class="fas fa-volume-up icon"></i> CONVERTING...';
